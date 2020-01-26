@@ -7,5 +7,6 @@ import (
 func main() {
 	const IP string = "127.0.0.1"
 	const PORT int = 20777
-	playback.PlayPackets(IP, PORT)
+	playback.SetIP(IP, PORT)
+	playback.PlayPackets()
 }

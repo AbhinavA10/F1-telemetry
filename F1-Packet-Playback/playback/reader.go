@@ -27,5 +27,6 @@ func ReadData(filepath string) []byte {
 		fmt.Println(err)
 		return nil
 	}
+	_ = numBytesRead
 	return buffer
 }
