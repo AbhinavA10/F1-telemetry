@@ -1,14 +1,13 @@
-// Package reader Reads UDP packet files, stored in .bin format
-package reader
+package playback
 
 import (
 	"fmt"
 	"os"
 )
 
-// ReadData reads files from supplied path and returns the binary data
-func ReadData() []byte {
-	file, err := os.Open("/media/abhi_ubuntu18/600C7EC53DCD4841/f1/Packets/Packet10.bin")
+// ReadData reads bytes from a single supplied path and returns the binary data
+func ReadData(filepath string) []byte {
+	file, err := os.Open(filepath)
 	if err != nil {
 		fmt.Println(err)
 		return nil
@@ -23,12 +22,10 @@ func ReadData() []byte {
 	}
 	fileSize := fileInfo.Size()
 	buffer := make([]byte, fileSize)
-	bytesRead, err := file.Read(buffer)
+	numBytesRead, err := file.Read(buffer)
 	if err != nil {
 		fmt.Println(err)
 		return nil
 	}
-	fmt.Println("number of bytes read: ", bytesRead)
-	fmt.Println("bytestream:", buffer)
 	return buffer
 }
