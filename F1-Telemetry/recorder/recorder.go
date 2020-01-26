@@ -26,6 +26,7 @@ func NewPacketRecorder(IP string, PORT string) *PacketRecorder {
 	}
 	// Make a udp server
 	conn, err := net.ListenUDP("udp", udpAddr)
+	// maybe need to use setReuseAddress(true)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -33,7 +34,7 @@ func NewPacketRecorder(IP string, PORT string) *PacketRecorder {
 	return &player
 }
 
-// RecordPackets reads bytes from a folder and publishes to udp port
+// RecordPackets reads bytes from UDP connection, and converts to struct
 func RecordPackets(player *PacketRecorder) {
 	defer player.connection.Close()
 	for {
@@ -45,8 +46,7 @@ func RecordPackets(player *PacketRecorder) {
 		}
 		telemPacket := DatagramToStruct(udpData)
 		fmt.Println(telemPacket.Speed * 2.23694)
-		//TODO: convert UDP packet to struct
-		//TODO: Add to data store
+		//TODO: Somewhere, send to influxDB with a time of telemPacket.time
 		player.mutex.Unlock()
 	}
 }
