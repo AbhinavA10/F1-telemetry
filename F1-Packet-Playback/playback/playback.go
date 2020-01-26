@@ -13,7 +13,7 @@ import (
 //PacketPlayer holds udp playback settings
 type PacketPlayer struct {
 	connection *net.UDPConn
-	mutex      sync.Mutex
+	mutex      *sync.Mutex
 }
 
 // NewPacketPlayer instantiates and returns a new PacketPlayer with supplied config
@@ -23,6 +23,7 @@ func NewPacketPlayer(IP string, PORT string) *PacketPlayer {
 	if err != nil {
 		fmt.Println(err)
 	}
+	// Make a udp client
 	conn, err := net.DialUDP("udp", nil, udpAddr)
 	if err != nil {
 		fmt.Println(err)
@@ -45,8 +46,6 @@ func PlayPackets(player *PacketPlayer) {
 	var n int
 	var filepath string
 	var numFiles int = getNumFiles(BaseFilePath)
-	fmt.Println(player)
-	//TODO: init UDP socket
 	for n = 0; n < numFiles; n++ {
 		player.mutex.Lock()
 		filepath = BaseFilePath + "/Packet" + strconv.Itoa(n) + ".bin"
@@ -59,7 +58,6 @@ func PlayPackets(player *PacketPlayer) {
 // PublishPacket publishes supplied data onto a udp packet
 func PublishPacket(player *PacketPlayer, data []byte) {
 	_, err := player.connection.Write(data)
-	//TODO: am getting connection refused
 	if err != nil {
 		fmt.Println(err)
 	}

@@ -94,7 +94,6 @@ namespace F1_Capture
             {
                 string filename = "D:\\Packets\\Packet" + i + ".bin";
                 Byte[] udpBytes = File.ReadAllBytes(filename);
-                //TODO: publish packets onto port
 
             }
             syncMutex.ReleaseMutex();
