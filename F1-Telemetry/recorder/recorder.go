@@ -13,8 +13,8 @@ const PACKETSIZE int = 152
 //PacketRecorder holds udp playback settings
 type PacketRecorder struct {
 	connection     *net.UDPConn
-	mutex          *sync.Mutex
-	dataStoreMutex *sync.Mutex
+	mutex          sync.Mutex
+	dataStoreMutex sync.Mutex
 }
 
 // NewPacketRecorder instantiates and returns a new PacketRecorder with supplied config

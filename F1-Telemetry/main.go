@@ -2,11 +2,10 @@ package main
 
 import (
 	"F1-2012-telemetry/recorder"
-	"fmt"
+	_ "fmt"
 )
 
 func main() {
-	fmt.Println("Hello world")
 	//ServerSocket.setReuseAddress(true)  to listen to a port that another application
 	// might already be listening to
 

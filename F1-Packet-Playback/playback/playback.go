@@ -8,12 +8,13 @@ import (
 	"net"
 	"strconv"
 	"sync"
+	"time"
 )
 
 //PacketPlayer holds udp playback settings
 type PacketPlayer struct {
 	connection *net.UDPConn
-	mutex      *sync.Mutex
+	mutex      sync.Mutex
 }
 
 // NewPacketPlayer instantiates and returns a new PacketPlayer with supplied config
@@ -34,6 +35,7 @@ func NewPacketPlayer(IP string, PORT string) *PacketPlayer {
 	return &player
 }
 
+//getNumFiles returns the number of files in the supplied directory path
 func getNumFiles(path string) int {
 	files, _ := ioutil.ReadDir(path)
 	return len(files)
@@ -51,6 +53,8 @@ func PlayPackets(player *PacketPlayer) {
 		filepath = BaseFilePath + "/Packet" + strconv.Itoa(n) + ".bin"
 		udpData := ReadData(filepath)
 		PublishPacket(player, udpData)
+		//20ms because 13178 packets were recorded in 4:30 minutes
+		time.Sleep(20 * time.Millisecond)
 		player.mutex.Unlock()
 	}
 }
