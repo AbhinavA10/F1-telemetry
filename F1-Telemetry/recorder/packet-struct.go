@@ -1,7 +1,14 @@
 package recorder
 
-//F1Packet is the udp packet struct sent by F1 2012
+import (
+	"bytes"
+	"encoding/binary" // encoding and decoding struct value to bytes
+	"fmt"
+)
+
+//F1Packet is the udp packet structure sent by F1 2012
 type F1Packet struct {
+	// All fields must be exported, for binary.Read to be successful
 	Time                         float32
 	LapTime                      float32
 	LapDistance                  float32
@@ -9,7 +16,7 @@ type F1Packet struct {
 	X                            float32
 	Y                            float32
 	Z                            float32
-	Speed                        float32
+	Speed                        float32 // m/s
 	WorldSpeedX                  float32
 	WorldSpeedY                  float32
 	WorldSpeedZ                  float32
@@ -41,7 +48,7 @@ type F1Packet struct {
 	Lap                          float32
 	EngineRevs                   float32
 	// 152 bytes ends here.
-	/* New Fields in Patch 12 */
+	/* New Fields in Patch 12. Didn't have. */
 	/*
 		NewField1                  float32 // Always 1
 		RacePosition               float32 // Position in race
@@ -72,4 +79,17 @@ type F1Packet struct {
 		NewField27                 float32 // New, for F1 2013. Always 0
 		NewField28                 float32 // New, for F1 2013. Always 0
 	*/
+}
+
+// DatagramToStruct returns a new F1Packet from bytes
+func DatagramToStruct(buf []byte) *F1Packet {
+	var pack F1Packet
+	r := bytes.NewReader(buf) // binary.Read requires a reader
+	// F1 outputs packet data in LittleEndian style
+	// Bytes read from r are written using LittleEndian decoding into successive fields of the pack pointer
+	// https://golang.org/pkg/encoding/binary/#Read
+	if err := binary.Read(r, binary.LittleEndian, &pack); err != nil {
+		fmt.Println(err)
+	}
+	return &pack
 }

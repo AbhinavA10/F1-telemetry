@@ -53,8 +53,8 @@ func PlayPackets(player *PacketPlayer) {
 		filepath = BaseFilePath + "/Packet" + strconv.Itoa(n) + ".bin"
 		udpData := ReadData(filepath)
 		PublishPacket(player, udpData)
-		//20ms because 13178 packets were recorded in 4:30 minutes
-		time.Sleep(20 * time.Millisecond)
+		//17.98451965ms because 13178 packets were recorded in 3:57 minutes
+		time.Sleep(17 * time.Millisecond)
 		player.mutex.Unlock()
 	}
 }

@@ -43,7 +43,8 @@ func RecordPackets(player *PacketRecorder) {
 		if err != nil {
 			fmt.Println(err)
 		}
-		fmt.Println(udpData)
+		telemPacket := DatagramToStruct(udpData)
+		fmt.Println(telemPacket.Speed * 2.23694)
 		//TODO: convert UDP packet to struct
 		//TODO: Add to data store
 		player.mutex.Unlock()
