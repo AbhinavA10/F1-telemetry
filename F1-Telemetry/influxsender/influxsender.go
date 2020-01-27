@@ -16,17 +16,6 @@ list.Remove(dataToPub)
 
 */
 
-/*
-
-InfluxDB has a line protocol for sending time series data which takes the following form: measurement-name tag-set field-set timestamp.
-The measurement name is a string,
-the tag set is a collection of key/value pairs where all values are strings,
-and the field set is a collection of key/value pairs where the values can be int64, float64, bool, or string.
-The measurement name and tag sets are kept in an inverted index which make lookups for specific series very fast.
-*/
-
-// thus we can supply the timestamp to use...
-// I won't have use of a 'tag set'. I will use the 'field-set'
 import (
 	"fmt"
 	_ "github.com/influxdata/influxdb1-client" // this is important because of the bug in go mod

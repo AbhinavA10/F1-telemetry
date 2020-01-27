@@ -86,3 +86,11 @@ time                external internal machine type
   - default is `autogen` which has inf duration
 
 - A point represents a single data record that has four components: a measurement, tag set, field set, and a timestamp.
+
+
+## My Proposed Schema
+`Database Name`: F1_Telemetry
+- `measurement`: telemetryData
+- `tag`s: none
+- `field`s: 1 for each float32 in the packet struct
+- `time`: packet's time. 

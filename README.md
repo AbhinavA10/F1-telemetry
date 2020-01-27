@@ -24,3 +24,9 @@ chronograf or graphana queries influxdb and visualizes it.
 
 Using Grafana and InfluxDB
 https://grafana.com/docs/grafana/latest/features/datasources/influxdb/
+
+
+TODO:
+- [ ] Write data from go to InfluxDB using go client
+- [ ] Install Grafana or Chronograf
+- [ ] Interface the above with InfluxDB
