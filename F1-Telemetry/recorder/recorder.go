@@ -45,7 +45,8 @@ func RecordPackets(player *PacketRecorder) {
 			fmt.Println(err)
 		}
 		telemPacket := DatagramToStruct(udpData)
-		fmt.Println(telemPacket.Speed * 2.23694)
+		fmt.Println(telemPacket)
+		//fmt.Println(telemPacket.Speed * 2.23694)
 		//TODO: Somewhere, send to influxDB with a time of telemPacket.time
 		player.mutex.Unlock()
 	}
