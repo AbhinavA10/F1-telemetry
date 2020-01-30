@@ -1,8 +1,8 @@
 package influxsender
 
-// To add a new point to influxdb, I will need to convert the F1Packet struct to a hashmap
 // Client documentation https://godoc.org/github.com/influxdata/influxdb1-client/v2
 //Go specific doumentationL: http://167.114.231.105/client_libraries/libraries/go/
+
 /*A channel is safe for concurrent access.
 select and case is used to wait for different channels
 can send data over channels
@@ -14,59 +14,75 @@ need to call
 var list  *List
 dataToPub := list.Front() // of type Element
 list.Remove(dataToPub)
-
 */
 
 import (
+	"F1-2012-telemetry/f1packet"
 	"fmt"
 	_ "github.com/influxdata/influxdb1-client" // this is important because of the bug in go mod
 	client "github.com/influxdata/influxdb1-client/v2"
-	_ "log"
+	"log"
 	"time"
 )
 
+//InfluxSender contains connection data with InfluxDB
+type InfluxSender struct {
+	connection client.Client
+}
+
+// NewInfluxSender makes a new struct
+func NewInfluxSender() *InfluxSender {
+	sender := InfluxSender{}
+	ConnectClient(&sender)
+	return &sender
+}
+
 //ConnectClient creates a connection to local instance of InfluxDB
-func ConnectClient() {
-	// Make client
+func ConnectClient(sender *InfluxSender) {
 	c, err := client.NewHTTPClient(client.HTTPConfig{
 		Addr: "http://localhost:8086",
 	})
 	if err != nil {
-		fmt.Println("Error: ", err.Error())
+		log.Println("Error: ", err.Error())
 	}
-	//defer c.Close()
+	sender.connection = c
+}
 
-	// Create a new point batch
+//SendData sends data to InfluxDB
+func SendData(sender InfluxSender, packet f1packet.F1Packet) {
+
+	// Create a new batch of points
 	bp, _ := client.NewBatchPoints(client.BatchPointsConfig{
 		Database:  "F1_Telemetry",
 		Precision: "ms",
 	})
 
-	// Create a point and add to batch
-	tags := map[string]string{"type": "cpu-total"}
+	// Create a new point
+	//TODO: convert packet struct to a hashmap, in code, instead of manually
 	fields := map[string]interface{}{
 		"idle":   10.1,
 		"system": 53.3,
 		"user":   46.6,
 	}
-	pt, err := client.NewPoint("precise_measurement", tags, fields, time.Now())
+	// no tags
+	pt, err := client.NewPoint("telemPacket", nil, fields, time.Now())
 	if err != nil {
-		fmt.Println("Error: ", err.Error())
+		log.Println("Error: ", err.Error())
 	}
-	fmt.Println(pt)
+	// Add current point to batch of points
 	bp.AddPoint(pt)
 
-	// Write the batch
-	err = c.Write(bp)
+	// Write the batch to db
+	err = sender.connection.Write(bp)
 	if err != nil {
-		fmt.Println("failed")
-	} else {
-		fmt.Println("wrote")
+		log.Println("Error: ", err.Error())
 	}
+}
 
+//CloseConnection closes connection with InfluxDB
+func CloseConnection(sender InfluxSender) {
 	// Close client resources
-	if err := c.Close(); err != nil {
+	if err := sender.connection.Close(); err != nil {
 		fmt.Println(err)
 	}
-
 }

@@ -1,9 +1,10 @@
-package recorder
+package f1packet
 
 import (
 	"bytes"
 	"encoding/binary" // encoding and decoding struct value to bytes
 	"fmt"
+	"reflect"
 )
 
 //F1Packet is the udp packet structure sent by F1 2012
@@ -92,4 +93,17 @@ func DatagramToStruct(buf []byte) *F1Packet {
 		fmt.Println(err)
 	}
 	return &pack
+}
+
+//StructToMap converts F1Packet struct to map of string->float32
+func StructToMap(packet *F1Packet) *map[string]interface{} {
+	m := make(map[string]interface{})
+	values := reflect.ValueOf(packet).Elem() // get values of struct fields
+	types := values.Type()
+	for i := 0; i < values.NumField(); i++ {
+		val := float32(values.Field(i).Float()) // all of struct is float32
+		name := types.Field(i).Name
+		m[name] = val
+	}
+	return &m
 }

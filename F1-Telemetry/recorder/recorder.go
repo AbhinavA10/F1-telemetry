@@ -2,6 +2,7 @@
 package recorder
 
 import (
+	"F1-2012-telemetry/f1packet"
 	"fmt"
 	"net"
 	"sync"
@@ -44,9 +45,8 @@ func RecordPackets(player *PacketRecorder) {
 		if err != nil {
 			fmt.Println(err)
 		}
-		telemPacket := DatagramToStruct(udpData)
+		telemPacket := f1packet.DatagramToStruct(udpData)
 		fmt.Println(telemPacket)
-		//fmt.Println(telemPacket.Speed * 2.23694)
 		//TODO: Somewhere, send to influxDB with a time of telemPacket.time
 		player.mutex.Unlock()
 	}
