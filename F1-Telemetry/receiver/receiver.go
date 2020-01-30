@@ -1,5 +1,5 @@
-// Package recorder will consume data published by F1 2012, or the playback module
-package recorder
+// Package receiver will consume data published by F1 2012, or the playback module
+package receiver
 
 import (
 	"F1-2012-telemetry/f1packet"
