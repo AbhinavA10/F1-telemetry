@@ -94,3 +94,10 @@ time                external internal machine type
 - `tag`s: none
 - `field`s: 1 for each float32 in the packet struct
 - `time`: packet's time. 
+
+
+
+
+- sudo systemctl start grafana-server
+- http://localhost:3000/
+- admin admin

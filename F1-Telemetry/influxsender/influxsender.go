@@ -49,7 +49,7 @@ func ConnectClient(sender *InfluxSender) {
 }
 
 //SendData sends data to InfluxDB
-func SendData(sender InfluxSender, packet f1packet.F1Packet) {
+func SendData(sender *InfluxSender, packet *f1packet.F1Packet) {
 
 	// Create a new batch of points
 	bp, _ := client.NewBatchPoints(client.BatchPointsConfig{
@@ -59,13 +59,9 @@ func SendData(sender InfluxSender, packet f1packet.F1Packet) {
 
 	// Create a new point
 	//TODO: convert packet struct to a hashmap, in code, instead of manually
-	fields := map[string]interface{}{
-		"idle":   10.1,
-		"system": 53.3,
-		"user":   46.6,
-	}
+	fields := f1packet.StructToMap(packet)
 	// no tags
-	pt, err := client.NewPoint("telemPacket", nil, fields, time.Now())
+	pt, err := client.NewPoint("telemPacket", nil, fields, time.Now()) //TODO: use packet.Time or store value of time.Now when we actually receive the new da
 	if err != nil {
 		log.Println("Error: ", err.Error())
 	}

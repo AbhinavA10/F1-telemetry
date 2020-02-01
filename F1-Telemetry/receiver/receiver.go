@@ -36,18 +36,14 @@ func NewPacketRecorder(IP string, PORT string) *PacketRecorder {
 }
 
 // RecordPackets reads bytes from UDP connection, and converts to struct
-func RecordPackets(player *PacketRecorder) {
-	defer player.connection.Close()
-	for {
-		udpData := make([]byte, PACKETSIZE)
-		_, _, err := player.connection.ReadFromUDP(udpData)
-		player.mutex.Lock()
-		if err != nil {
-			fmt.Println(err)
-		}
-		telemPacket := f1packet.DatagramToStruct(udpData)
-		fmt.Println(telemPacket)
-		//TODO: Somewhere, send to influxDB with a time of telemPacket.time
-		player.mutex.Unlock()
+func RecordPackets(player *PacketRecorder) *f1packet.F1Packet {
+	udpData := make([]byte, PACKETSIZE)
+	player.mutex.Lock()
+	_, _, err := player.connection.ReadFromUDP(udpData)
+	if err != nil {
+		fmt.Println(err)
 	}
+	telemPacket := f1packet.DatagramToStruct(udpData)
+	player.mutex.Unlock()
+	return telemPacket
 }

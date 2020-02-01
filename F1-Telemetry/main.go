@@ -11,6 +11,8 @@ func main() {
 	const PORT string = "20777"
 	packetRecorder := receiver.NewPacketRecorder(IP, PORT)
 	influxSender := influxsender.NewInfluxSender()
-	influxsender.ConnectClient(influxSender)
-	receiver.RecordPackets(packetRecorder)
+	for {
+		telemData := receiver.RecordPackets(packetRecorder)
+		influxsender.SendData(influxSender, telemData)
+	}
 }

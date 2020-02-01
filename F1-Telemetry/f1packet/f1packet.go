@@ -17,7 +17,7 @@ type F1Packet struct {
 	X                            float32
 	Y                            float32
 	Z                            float32
-	Speed                        float32 // m/s
+	Speed                        float32 // read in as m/s, but converted to mph before sending to influx
 	WorldSpeedX                  float32
 	WorldSpeedY                  float32
 	WorldSpeedZ                  float32
@@ -92,11 +92,12 @@ func DatagramToStruct(buf []byte) *F1Packet {
 	if err := binary.Read(r, binary.LittleEndian, &pack); err != nil {
 		fmt.Println(err)
 	}
+	pack.Speed = pack.Speed * 2.23694 // convert for InfluxDB
 	return &pack
 }
 
 //StructToMap converts F1Packet struct to map of string->float32
-func StructToMap(packet *F1Packet) *map[string]interface{} {
+func StructToMap(packet *F1Packet) map[string]interface{} {
 	m := make(map[string]interface{})
 	values := reflect.ValueOf(packet).Elem() // get values of struct fields
 	types := values.Type()
@@ -105,5 +106,5 @@ func StructToMap(packet *F1Packet) *map[string]interface{} {
 		name := types.Field(i).Name
 		m[name] = val
 	}
-	return &m
+	return m
 }
