@@ -11,16 +11,16 @@ import (
 //PACKETSIZE is UDP packet size for F1 2012
 const PACKETSIZE int = 152
 
-//PacketRecorder holds udp playback settings
-type PacketRecorder struct {
+//PacketReceiver holds udp playback settings
+type PacketReceiver struct {
 	connection     *net.UDPConn
 	mutex          sync.Mutex
 	dataStoreMutex sync.Mutex
 }
 
-// NewPacketRecorder instantiates and returns a new PacketRecorder with supplied config
-func NewPacketRecorder(IP string, PORT string) *PacketRecorder {
-	player := PacketRecorder{}
+// NewPacketReceiver instantiates and returns a new PacketReceiver with supplied config
+func NewPacketReceiver(IP string, PORT string) *PacketReceiver {
+	receiver := PacketReceiver{}
 	udpAddr, err := net.ResolveUDPAddr("udp", IP+":"+PORT)
 	if err != nil {
 		fmt.Println(err)
@@ -31,19 +31,19 @@ func NewPacketRecorder(IP string, PORT string) *PacketRecorder {
 	if err != nil {
 		fmt.Println(err)
 	}
-	player.connection = conn
-	return &player
+	receiver.connection = conn
+	return &receiver
 }
 
-// RecordPackets reads bytes from UDP connection, and converts to struct
-func RecordPackets(player *PacketRecorder) *f1packet.F1Packet {
+// ReceivePacket reads bytes from UDP connection, and converts to struct
+func ReceivePacket(receiver *PacketReceiver) *f1packet.F1Packet {
 	udpData := make([]byte, PACKETSIZE)
-	player.mutex.Lock()
-	_, _, err := player.connection.ReadFromUDP(udpData)
+	receiver.mutex.Lock()
+	_, _, err := receiver.connection.ReadFromUDP(udpData)
 	if err != nil {
 		fmt.Println(err)
 	}
 	telemPacket := f1packet.DatagramToStruct(udpData)
-	player.mutex.Unlock()
+	receiver.mutex.Unlock()
 	return telemPacket
 }

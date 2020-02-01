@@ -9,10 +9,10 @@ import (
 func main() {
 	const IP string = "127.0.0.1"
 	const PORT string = "20777"
-	packetRecorder := receiver.NewPacketRecorder(IP, PORT)
+	packetReceiver := receiver.NewPacketReceiver(IP, PORT)
 	influxSender := influxsender.NewInfluxSender()
 	for {
-		telemData := receiver.RecordPackets(packetRecorder)
+		telemData := receiver.ReceivePacket(packetReceiver)
 		influxsender.SendData(influxSender, telemData)
 	}
 }

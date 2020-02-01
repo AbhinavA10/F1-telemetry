@@ -1,7 +1,7 @@
 package playback
 
 import (
-	"fmt"
+	"log"
 	"os"
 )
 
@@ -9,7 +9,7 @@ import (
 func ReadData(filepath string) []byte {
 	file, err := os.Open(filepath)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return nil
 	}
 	defer file.Close() // once ReadData() is done, close the file
@@ -17,14 +17,14 @@ func ReadData(filepath string) []byte {
 	// allocate a buffer the size of the file
 	fileInfo, err := file.Stat()
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return nil
 	}
 	fileSize := fileInfo.Size()
 	buffer := make([]byte, fileSize)
 	numBytesRead, err := file.Read(buffer)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return nil
 	}
 	_ = numBytesRead
