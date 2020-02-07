@@ -1,4 +1,4 @@
-// Package recorder will consume data published by F1 2012, or the playback module
+// Package recorder will consume data published by F1, or the playback module
 package recorder
 
 import (
@@ -10,7 +10,7 @@ import (
 	"sync"
 )
 
-//PACKETSIZE is UDP packet size for F1 2012
+//PACKETSIZE is UDP packet size for F1
 const PACKETSIZE int = 152
 const baseFilePath string = "/media/abhi_ubuntu18/600C7EC53DCD4841/f1/NewPackets"
 

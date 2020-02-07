@@ -17,7 +17,7 @@ list.Remove(dataToPub)
 */
 
 import (
-	"F1-2012-telemetry/f1packet"
+	"F1-telemetry/f1packet"
 	"fmt"
 	_ "github.com/influxdata/influxdb1-client" // this is important because of the bug in go mod
 	client "github.com/influxdata/influxdb1-client/v2"

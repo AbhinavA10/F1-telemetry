@@ -1,4 +1,4 @@
-module F1-2012-telemetry
+module F1-telemetry
 
 go 1.13
 

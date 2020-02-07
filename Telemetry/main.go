@@ -1,8 +1,8 @@
 package main
 
 import (
-	"F1-2012-telemetry/influxsender"
-	"F1-2012-telemetry/receiver"
+	"F1-telemetry/influxsender"
+	"F1-telemetry/receiver"
 	_ "fmt"
 )
 

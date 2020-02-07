@@ -1,5 +1,5 @@
 # F1-telemetry
-Telemetry client for F1 2012, in GoLang
+Telemetry client for F1, in GoLang
 
 UDP Packets were recorded using [this C# function](https://github.com/AbhinavA10/F1-telemetry/blob/master/ByteWriter/F1_Capture/Main_Program.cs#L67) .
 

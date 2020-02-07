@@ -7,7 +7,7 @@ import (
 	"reflect"
 )
 
-//F1Packet is the udp packet structure sent by F1 2012
+//F1Packet is the udp packet structure sent by F1
 type F1Packet struct {
 	// All fields must be exported, for binary.Read to be successful
 	Time                         float32

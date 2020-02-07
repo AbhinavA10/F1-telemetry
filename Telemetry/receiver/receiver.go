@@ -1,14 +1,14 @@
-// Package receiver will consume data published by F1 2012, or the playback module
+// Package receiver will consume data published by F1, or the playback module
 package receiver
 
 import (
-	"F1-2012-telemetry/f1packet"
+	"F1-telemetry/f1packet"
 	"fmt"
 	"net"
 	"sync"
 )
 
-//PACKETSIZE is UDP packet size for F1 2012
+//PACKETSIZE is UDP packet size for F1
 const PACKETSIZE int = 152
 
 //PacketReceiver holds udp playback settings
